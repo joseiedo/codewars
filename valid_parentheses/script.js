@@ -15,6 +15,5 @@ function validParentheses(parens) {
   if (parentesesAberto === 0) {
     return true;
   }
-
   return false;
 }
