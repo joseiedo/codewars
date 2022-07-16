@@ -27,16 +27,17 @@ function solucao(partidas) {
   let selecoes = [];
 
   partidas.forEach((partida) => {
+    //pegando os valores pra calcular o saldo de gols!!! :DDDD
     const resultados = partida
       .split(":")
       .map((resultado) => resultado.split("_"));
-
+    // console.log(resultados);
     const saldoGolsPrimeiraSelecao =
       Number(resultados[0][1]) - Number(resultados[1][1]);
-
     let pontuacaoPrimeiraSelecao = 0;
     let pontuacaoSegundaSelecao = 0;
 
+    //regras de  pontuacao seguindo a tabelinha!
     if (saldoGolsPrimeiraSelecao >= 1) {
       pontuacaoPrimeiraSelecao = 3;
     } else if (saldoGolsPrimeiraSelecao === 0) {
@@ -45,6 +46,8 @@ function solucao(partidas) {
     } else {
       pontuacaoSegundaSelecao = 3;
     }
+
+    //criando o objeto de cada selecao dadsadasda
 
     const primeiraSelecao = {
       nome: resultados[0][0],
@@ -58,10 +61,18 @@ function solucao(partidas) {
       saldoGols: 0 - saldoGolsPrimeiraSelecao,
     };
 
+    // console.log(primeiraSelecao);
+    // console.log(segundaSelecao);
     selecoes.push(primeiraSelecao, segundaSelecao);
   });
+  classifica(selecoes);
+}
 
+function classifica(selecoes) {
   let classificados = [];
+
+  console.log(selecoes);
+  //limpando a array pra nao repetir os paises :D
   selecoes.reduce((grupo, selecao) => {
     if (!grupo[selecao.nome]) {
       grupo[selecao.nome] = {
@@ -69,19 +80,21 @@ function solucao(partidas) {
         pontuacao: 0,
         saldoGols: 0,
       };
-
       classificados.push(grupo[selecao.nome]);
     }
-
     grupo[selecao.nome].pontuacao += selecao.pontuacao;
     grupo[selecao.nome].saldoGols += selecao.saldoGols;
 
     return grupo;
   }, {});
+  console.log(classificados);
+  //organizando por pontuacao e saldo de forma decrescente.
   classificados.sort(
-    (a, b) => b.pontuacao - a.pontuacao || b.saldoGols - a.saldoGols
+    (a, b) => b.pontuacao - a.pontaucao || b.saldoGols - a.saldoGols
   );
+  console.log(classificados);
 
+  //configurando os empates
   if (
     classificados[3].pontuacao === classificados[1].pontuacao &&
     classificados[3].saldoGols === classificados[1].saldoGols
@@ -95,11 +108,12 @@ function solucao(partidas) {
   } else {
     classificados = classificados.splice(0, 2);
   }
+
+  //adiciona o ':' entre os valores msm
   classificados = classificados.map((classificado) =>
     Object.values(classificado).join(":")
   );
-
-  return classificados;
+  console.log(classificados);
 }
 
 const selecaoGols = [
